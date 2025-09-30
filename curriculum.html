@@ -11,550 +11,222 @@
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
     <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" rel="stylesheet">
     
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        :root {
-            /* Color System */
-            --primary-color: #0a9b7a;
-            --primary-light: #06d6a0;
-            --primary-dark: #078c6a;
-            --accent-warm: #ff6b35;
-            --accent-cool: #2196f3;
-            --accent-purple: #8b5cf6;
-            --accent-amber: #f59e0b;
-            
-            /* Text Colors */
-            --text-primary: #1a1a1a;
-            --text-secondary: #444;
-            --text-tertiary: #666;
-            --text-muted: #999;
-            
-            /* Surface Colors */
-            --surface-primary: #ffffff;
-            --surface-secondary: #fafafa;
-            --surface-elevated: #f5f5f5;
-            
-            /* Card System */
-            --card-bg: linear-gradient(180deg, #fff, #fafafa);
-            --card-border: 1px solid rgba(209, 213, 219, 0.55);
-            --card-shadow: 0 4px 12px rgba(0,0,0,0.05);
-            --card-shadow-hover: 0 8px 25px rgba(10,155,122,0.12);
-            --card-hover-lift: translateY(-4px);
-            
-            /* Layout */
-            --radius: 16px;
-            --radius-sm: 8px;
-            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            --transition-bounce: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-        
-        body {
-            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            line-height: 1.6;
-            color: var(--text-primary);
-            background: var(--surface-primary);
-            scroll-behavior: smooth;
-        }
-
-        /* Header */
-        .header {
-            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
-            color: white;
-            padding: 3rem 2rem;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .header::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            right: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
-            animation: rotate 20s linear infinite;
-        }
-
-        @keyframes rotate {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .header-content {
-            max-width: 800px;
-            margin: 0 auto;
-            position: relative;
-            z-index: 2;
-        }
-
-        .back-link {
-            position: absolute;
-            top: 2rem;
-            left: 2rem;
-            color: rgba(255,255,255,0.9);
-            text-decoration: none;
-            font-size: 0.9rem;
-            transition: var(--transition);
-            z-index: 3;
-        }
-
-        .back-link:hover {
-            color: white;
-            transform: translateX(-5px);
-        }
-
-        .header-title {
-            font-size: clamp(2.5rem, 5vw, 3.5rem);
-            font-weight: 300;
-            margin-bottom: 1rem;
-            letter-spacing: -1px;
-        }
-
-        .header-title strong {
-            font-weight: 700;
-            background: linear-gradient(135deg, #ffffff, rgba(255,255,255,0.8));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .header-subtitle {
-            font-size: clamp(1.1rem, 2.5vw, 1.3rem);
-            opacity: 0.9;
-            margin-bottom: 2rem;
-            font-weight: 300;
-        }
-
-        .transformation-badge {
-            display: inline-block;
-            background: rgba(255,255,255,0.15);
-            color: white;
-            padding: 8px 24px;
-            border-radius: 25px;
-            font-size: 0.9rem;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.2);
-        }
-
-        /* Main Content */
-        .main-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 4rem 2rem;
-        }
-
-        .intro-section {
-            text-align: center;
-            margin-bottom: 4rem;
-        }
-
-        .intro-title {
-            font-size: clamp(2rem, 4vw, 2.8rem);
-            font-weight: 200;
-            color: var(--text-primary);
-            margin-bottom: 1rem;
-            letter-spacing: -0.5px;
-        }
-
-        .intro-title strong {
-            font-weight: 700;
-            color: var(--primary-color);
-        }
-
-        .intro-desc {
-            font-size: clamp(1.1rem, 2vw, 1.2rem);
-            color: var(--text-secondary);
-            max-width: 700px;
-            margin: 0 auto 2rem;
-            line-height: 1.8;
-        }
-
-        .highlight-box {
-            background: var(--card-bg);
-            border: var(--card-border);
-            border-left: 4px solid var(--accent-warm);
-            border-radius: var(--radius);
-            padding: 2rem;
-            margin: 2rem auto;
-            max-width: 800px;
-            box-shadow: var(--card-shadow);
-            transition: var(--transition);
-        }
-
-        .highlight-box:hover {
-            transform: var(--card-hover-lift);
-            box-shadow: var(--card-shadow-hover);
-        }
-
-        .highlight-title {
-            font-size: 1.3rem;
-            font-weight: 600;
-            color: var(--accent-warm);
-            margin-bottom: 1rem;
-        }
-
-        /* Process Steps */
-        .process-section {
-            margin: 4rem 0;
-        }
-
-        .section-title {
-            font-size: clamp(1.8rem, 3vw, 2.4rem);
-            font-weight: 200;
-            text-align: center;
-            margin-bottom: 3rem;
-            color: var(--text-primary);
-            letter-spacing: -0.5px;
-        }
-
-        .section-title strong {
-            font-weight: 700;
-            color: var(--primary-color);
-        }
-
-        .process-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 2rem;
-            margin-bottom: 3rem;
-        }
-
-        .process-step {
-            background: var(--card-bg);
-            border: var(--card-border);
-            border-radius: var(--radius);
-            padding: 2rem;
-            box-shadow: var(--card-shadow);
-            transition: var(--transition-bounce);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .process-step::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, var(--primary-color), var(--primary-light));
-            transform: scaleX(0);
-            transition: transform 0.4s ease;
-            transform-origin: left;
-        }
-
-        .process-step:hover {
-            transform: var(--card-hover-lift);
-            box-shadow: var(--card-shadow-hover);
-        }
-
-        .process-step:hover::before {
-            transform: scaleX(1);
-        }
-
-        .step-header {
-            display: flex;
-            align-items: center;
-            margin-bottom: 1.5rem;
-        }
-
-        .step-number {
-            width: 48px;
-            height: 48px;
-            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 1.2rem;
-            margin-right: 1rem;
-            box-shadow: 0 4px 12px rgba(10, 155, 122, 0.3);
-        }
-
-        .step-title {
-            font-size: 1.4rem;
-            font-weight: 600;
-            color: var(--text-primary);
-            letter-spacing: -0.3px;
-        }
-
-        .step-subtitle {
-            font-size: 0.9rem;
-            color: var(--text-muted);
-            font-weight: 500;
-            margin-top: 0.3rem;
-        }
-
-        .step-content {
-            list-style: none;
-        }
-
-        .step-content li {
-            padding: 0.6rem 0;
-            padding-left: 1.5rem;
-            position: relative;
-            color: var(--text-secondary);
-            line-height: 1.7;
-        }
-
-        .step-content li::before {
-            content: '•';
-            position: absolute;
-            left: 0;
-            color: var(--primary-color);
-            font-weight: 700;
-            font-size: 1.2rem;
-        }
-
-        /* CTA Section */
-        .cta-section {
-            background: var(--surface-secondary);
-            border-radius: var(--radius);
-            padding: 3rem 2rem;
-            text-align: center;
-            margin-top: 4rem;
-            border: var(--card-border);
-        }
-
-        .cta-title {
-            font-size: clamp(1.8rem, 3vw, 2.2rem);
-            font-weight: 600;
-            color: var(--text-primary);
-            margin-bottom: 1rem;
-        }
-
-        .cta-desc {
-            font-size: 1.1rem;
-            color: var(--text-secondary);
-            margin-bottom: 2rem;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .cta-button {
-            display: inline-block;
-            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
-            color: white;
-            padding: 1rem 2.5rem;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 1.1rem;
-            transition: var(--transition-bounce);
-            box-shadow: 0 6px 20px rgba(10, 155, 122, 0.3);
-        }
-
-        .cta-button:hover {
-            transform: translateY(-3px) scale(1.05);
-            box-shadow: 0 12px 30px rgba(10, 155, 122, 0.4);
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .header {
-                padding: 2rem 1rem;
-            }
-
-            .back-link {
-                position: relative;
-                top: auto;
-                left: auto;
-                display: block;
-                margin-bottom: 1rem;
-                text-align: left;
-            }
-
-            .main-content {
-                padding: 2rem 1rem;
-            }
-
-            .process-grid {
-                grid-template-columns: 1fr;
-                gap: 1.5rem;
-            }
-
-            .process-step {
-                padding: 1.5rem;
-            }
-
-            .step-header {
-                flex-direction: column;
-                text-align: center;
-                margin-bottom: 1rem;
-            }
-
-            .step-number {
-                margin-right: 0;
-                margin-bottom: 0.5rem;
-            }
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-            * {
-                animation: none !important;
-                transition: none !important;
-            }
-        }
-    </style>
+    <!-- CSS Modules -->
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/curriculum-page.css">
 </head>
 <body>
+    <!-- Header -->
     <header class="header">
-        <a href="edu_info_refined.html" class="back-link">← 메인으로 돌아가기</a>
+        <a href="index.html" class="back-link">← 메인으로 돌아가기</a>
         <div class="header-content">
-            <div class="transformation-badge">AI TRANSFORMATION</div>
-            <h1 class="header-title">Let AI Work <strong>커리큘럼</strong></h1>
-            <p class="header-subtitle">기업의 디지털 변혁을 이끄는 AI 의사결정 전문가 양성 과정</p>
+            <span class="header-badge">AI Transformation</span>
+            <h1>Let AI Work 커리큘럼</h1>
+            <p>데이터 수집부터 의사결정, 실행까지<br>7단계 AI 의사결정 프로세스로 조직을 혁신합니다</p>
         </div>
     </header>
 
+    <!-- Main Content -->
     <main class="main-content">
         <section class="intro-section">
-            <h2 class="intro-title">단순한 교육이 아닌, <strong>조직의 AI 변혁</strong></h2>
-            <p class="intro-desc">
-                Let AI Work는 개인의 스킬업을 넘어 조직 전체의 AI Transformation을 목표로 합니다.<br>
-                체계적인 방법론과 실무 중심 교육으로 진정한 AI 의사결정 전문가를 양성합니다.
+            <h2>완전한 <span class="highlight">AI Transformation</span>을 경험하세요</h2>
+            <p>
+                단순한 AI 툴 사용이 아닌, <strong class="highlight">업무 프로세스 전체를 AI로 혁신</strong>하는 방법을 배웁니다.<br>
+                데이터 수집, 정제, 분류, 분석, 의사결정, 실행, 학습의 7단계 프로세스를 통해<br>
+                실무에 즉시 적용 가능한 AI 자동화 시스템을 구축합니다.
             </p>
-            
-            <div class="highlight-box">
-                <h3 class="highlight-title">🎯 교육 목표: AI-First 조직 구축</h3>
-                <p>기존의 업무 방식을 AI 기반으로 완전히 재설계하여, 데이터 수집부터 의사결정 실행까지 
-                전 과정을 자동화하는 차세대 업무 환경을 만들어갑니다.</p>
-            </div>
         </section>
 
-        <section class="process-section">
-            <h2 class="section-title">체계적인 <strong>7단계 의사결정 프로세스</strong></h2>
-            
-            <div class="process-grid">
-                <div class="process-step">
-                    <div class="step-header">
-                        <div class="step-number">1</div>
-                        <div>
-                            <h3 class="step-title">정보의 수집</h3>
-                            <p class="step-subtitle">Data Gathering</p>
-                        </div>
+        <!-- Process Steps -->
+        <div class="process-steps">
+            <!-- Step 1: 데이터 수집 -->
+            <article class="step-card">
+                <div class="step-header">
+                    <div class="step-number">1</div>
+                    <div class="step-title-group">
+                        <h3>데이터 수집</h3>
+                        <p class="step-subtitle">Data Gathering</p>
                     </div>
-                    <ul class="step-content">
-                        <li>웹 크롤링, API 연동, IoT/센서 데이터 수집</li>
-                        <li>이메일, 보고서, 회의록 등 내부 문서 자동 수집</li>
-                        <li>고객 대화, 콜센터 기록, 로그 데이터 자동 취합</li>
+                </div>
+                <p class="step-description">
+                    업무에 필요한 모든 데이터를 자동으로 수집합니다. 
+                    <strong>웹 크롤링, API 연동, 문서 자동 취합</strong> 등으로 
+                    반복적인 데이터 수집 업무에서 해방됩니다.
+                </p>
+                <div class="step-details">
+                    <h4>실습 내용</h4>
+                    <ul>
+                        <li>Python을 활용한 웹 크롤링 자동화</li>
+                        <li>REST API 연동으로 외부 데이터 수집</li>
+                        <li>이메일, 문서, 로그 파일 자동 취합</li>
+                        <li>실시간 데이터 모니터링 시스템 구축</li>
                     </ul>
                 </div>
+            </article>
 
-                <div class="process-step">
-                    <div class="step-header">
-                        <div class="step-number">2</div>
-                        <div>
-                            <h3 class="step-title">정보의 정제·구조화</h3>
-                            <p class="step-subtitle">Data Cleaning & Structuring</p>
-                        </div>
+            <!-- Step 2: 데이터 정제 -->
+            <article class="step-card">
+                <div class="step-header">
+                    <div class="step-number">2</div>
+                    <div class="step-title-group">
+                        <h3>데이터 정제</h3>
+                        <p class="step-subtitle">Data Cleaning</p>
                     </div>
-                    <ul class="step-content">
-                        <li>중복 제거, 오류 수정, 결측치 보완</li>
-                        <li>비정형 데이터 → 정형 데이터로 변환 (PDF → DB화, 음성 → 텍스트)</li>
-                        <li>LLM을 이용한 태깅, 메타데이터 생성</li>
+                </div>
+                <p class="step-description">
+                    수집된 데이터를 AI가 분석 가능한 형태로 정리합니다. 
+                    <strong>중복 제거, 오류 수정, 표준화</strong>를 자동화하여 
+                    데이터 품질을 높이고 분석 시간을 단축합니다.
+                </p>
+                <div class="step-details">
+                    <h4>실습 내용</h4>
+                    <ul>
+                        <li>결측치, 이상치 자동 탐지 및 처리</li>
+                        <li>중복 데이터 자동 제거 시스템</li>
+                        <li>데이터 형식 통일 및 구조화</li>
+                        <li>AI 기반 데이터 검증 파이프라인 구축</li>
                     </ul>
                 </div>
+            </article>
 
-                <div class="process-step">
-                    <div class="step-header">
-                        <div class="step-number">3</div>
-                        <div>
-                            <h3 class="step-title">정보의 분류·요약</h3>
-                            <p class="step-subtitle">Classification & Summarization</p>
-                        </div>
+            <!-- Step 3: 데이터 분류 -->
+            <article class="step-card">
+                <div class="step-header">
+                    <div class="step-number">3</div>
+                    <div class="step-title-group">
+                        <h3>데이터 분류</h3>
+                        <p class="step-subtitle">Data Classification</p>
                     </div>
-                    <ul class="step-content">
-                        <li>LLM/ML 기반 주제 분류, 클러스터링</li>
-                        <li>문서·대화 요약, 하이라이트 추출</li>
-                        <li>중요도/긴급도/우선순위에 따른 자동 라벨링</li>
+                </div>
+                <p class="step-description">
+                    AI가 데이터를 자동으로 카테고리화합니다. 
+                    <strong>고객 세그먼트, 문서 분류, 리드 스코어링</strong> 등 
+                    패턴 인식을 통해 정확하고 빠른 분류가 가능합니다.
+                </p>
+                <div class="step-details">
+                    <h4>실습 내용</h4>
+                    <ul>
+                        <li>LLM 기반 텍스트 자동 분류 시스템</li>
+                        <li>고객 문의 자동 라우팅</li>
+                        <li>문서 자동 태깅 및 인덱싱</li>
+                        <li>이미지 자동 분류 및 정리</li>
                     </ul>
                 </div>
+            </article>
 
-                <div class="process-step">
-                    <div class="step-header">
-                        <div class="step-number">4</div>
-                        <div>
-                            <h3 class="step-title">정보 분석·통찰 도출</h3>
-                            <p class="step-subtitle">Analysis & Insight Extraction</p>
-                        </div>
+            <!-- Step 4: 데이터 분석 -->
+            <article class="step-card">
+                <div class="step-header">
+                    <div class="step-number">4</div>
+                    <div class="step-title-group">
+                        <h3>데이터 분석</h3>
+                        <p class="step-subtitle">Data Analysis</p>
                     </div>
-                    <ul class="step-content">
-                        <li>통계적 분석, 예측 모델 적용</li>
-                        <li>트렌드 감지, 이상 탐지</li>
-                        <li>LLM 기반 "왜 이런 결과가 나왔는가" 설명</li>
+                </div>
+                <p class="step-description">
+                    AI가 패턴을 발견하고 인사이트를 도출합니다. 
+                    <strong>트렌드 분석, 이상치 탐지, 예측 모델링</strong>을 통해 
+                    데이터 기반 의사결정의 근거를 제공합니다.
+                </p>
+                <div class="step-details">
+                    <h4>실습 내용</h4>
+                    <ul>
+                        <li>매출 트렌드 및 계절성 분석</li>
+                        <li>고객 행동 패턴 분석</li>
+                        <li>이상 거래 자동 탐지 시스템</li>
+                        <li>AI 기반 리포트 자동 생성</li>
                     </ul>
                 </div>
+            </article>
 
-                <div class="process-step">
-                    <div class="step-header">
-                        <div class="step-number">5</div>
-                        <div>
-                            <h3 class="step-title">정보에 근거한 판단</h3>
-                            <p class="step-subtitle">Decision Making</p>
-                        </div>
+            <!-- Step 5: 의사결정 -->
+            <article class="step-card">
+                <div class="step-header">
+                    <div class="step-number">5</div>
+                    <div class="step-title-group">
+                        <h3>의사결정</h3>
+                        <p class="step-subtitle">Decision Making</p>
                     </div>
-                    <ul class="step-content">
-                        <li>규칙 기반 의사결정(Rule-based decision)</li>
-                        <li>강화학습/시뮬레이션 기반 최적화</li>
-                        <li>추천 시스템 ("다음 액션은 A가 적절합니다")</li>
+                </div>
+                <p class="step-description">
+                    AI가 최적의 대안을 제시하고 의사결정을 지원합니다. 
+                    <strong>시나리오 시뮬레이션, 리스크 평가, 우선순위 결정</strong>을 통해 
+                    빠르고 정확한 의사결정이 가능합니다.
+                </p>
+                <div class="step-details">
+                    <h4>실습 내용</h4>
+                    <ul>
+                        <li>다양한 시나리오 시뮬레이션</li>
+                        <li>리스크 평가 및 영향 분석</li>
+                        <li>최적화 알고리즘 기반 의사결정</li>
+                        <li>의사결정 과정 자동 문서화</li>
                     </ul>
                 </div>
+            </article>
 
-                <div class="process-step">
-                    <div class="step-header">
-                        <div class="step-number">6</div>
-                        <div>
-                            <h3 class="step-title">의사결정 실행·자동화</h3>
-                            <p class="step-subtitle">Action Automation</p>
-                        </div>
+            <!-- Step 6: 액션 자동화 -->
+            <article class="step-card">
+                <div class="step-header">
+                    <div class="step-number">6</div>
+                    <div class="step-title-group">
+                        <h3>액션 자동화</h3>
+                        <p class="step-subtitle">Action Automation</p>
                     </div>
-                    <ul class="step-content">
-                        <li>실제 업무 처리 (메일 발송, 보고서 작성, ERP 입력 등)</li>
-                        <li>워크플로우 자동화 (Zapier, n8n, Airflow 등)</li>
-                        <li>API 호출을 통한 실시간 액션 (주문 승인, 계약 전송)</li>
+                </div>
+                <p class="step-description">
+                    결정된 사항을 AI가 자동으로 실행합니다. 
+                    <strong>이메일 발송, 문서 생성, 시스템 업데이트</strong> 등 
+                    후속 조치를 자동화하여 실행 속도를 높입니다.
+                </p>
+                <div class="step-details">
+                    <h4>실습 내용</h4>
+                    <ul>
+                        <li>이메일 자동 응답 및 발송 시스템</li>
+                        <li>보고서 자동 생성 및 배포</li>
+                        <li>워크플로우 자동화 (Slack, 구글 시트 연동)</li>
+                        <li>조건부 액션 트리거 설정</li>
                     </ul>
                 </div>
+            </article>
 
-                <div class="process-step">
-                    <div class="step-header">
-                        <div class="step-number">7</div>
-                        <div>
-                            <h3 class="step-title">지식 축적·학습</h3>
-                            <p class="step-subtitle">Knowledge Accumulation & Learning</p>
-                        </div>
+            <!-- Step 7: 지속적 학습 -->
+            <article class="step-card">
+                <div class="step-header">
+                    <div class="step-number">7</div>
+                    <div class="step-title-group">
+                        <h3>지속적 학습</h3>
+                        <p class="step-subtitle">Continuous Learning</p>
                     </div>
-                    <ul class="step-content">
-                        <li>사내 데이터베이스/지식그래프 업데이트</li>
-                        <li>재학습/피드백 루프 구축 (사용자 피드백 → 모델 개선)</li>
-                        <li>조직 내 "집단지성" 자동화 (FAQ 자동 업데이트, 매뉴얼 자동 보완)</li>
+                </div>
+                <p class="step-description">
+                    AI가 실행 결과를 학습하여 프로세스를 개선합니다. 
+                    <strong>피드백 수집, 성과 모니터링, 모델 업데이트</strong>를 통해 
+                    지속적으로 진화하는 자동화 시스템을 구축합니다.
+                </p>
+                <div class="step-details">
+                    <h4>실습 내용</h4>
+                    <ul>
+                        <li>성과 지표 자동 모니터링 대시보드</li>
+                        <li>사용자 피드백 수집 및 분석</li>
+                        <li>AI 모델 재학습 파이프라인 구축</li>
+                        <li>A/B 테스트 자동화 시스템</li>
                     </ul>
                 </div>
-            </div>
-        </section>
+            </article>
+        </div>
 
+        <!-- CTA Section -->
         <section class="cta-section">
-            <h2 class="cta-title">당신의 조직도 AI Transformation을 시작하세요</h2>
-            <p class="cta-desc">
-                이 7단계 프로세스를 마스터하면, 개인의 업무 효율성은 물론 
-                조직 전체의 의사결정 품질과 속도가 혁신적으로 개선됩니다.
-            </p>
-            <a href="mailto:lio@aisahub.com?subject=AI Transformation 교육 문의" class="cta-button">
-                교육 상담 신청하기
-            </a>
+            <h2>지금 바로 AI Transformation을 시작하세요</h2>
+            <p>7단계 프로세스로 업무 전체를 혁신하고, 조직의 AI 전문가로 성장하세요.</p>
+            <a href="index.html#contact" class="cta-button">교육 신청하기</a>
         </section>
     </main>
+
+    <!-- JavaScript -->
+    <script src="js/main.js"></script>
 </body>
 </html>
