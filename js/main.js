@@ -18,6 +18,9 @@
         // Project tabs functionality (if exists)
         initProjectTabs();
         
+        // Framework details toggle
+        initFrameworkToggle();
+        
     });
 
     /**
@@ -110,12 +113,51 @@
     }
 
     /**
+     * Framework details toggle functionality
+     */
+    function initFrameworkToggle() {
+        const toggleBtn = document.getElementById('toggleDetails');
+        const detailsSection = document.getElementById('frameworkDetails');
+        
+        if (!toggleBtn || !detailsSection) return;
+        
+        toggleBtn.addEventListener('click', function() {
+            const isOpen = detailsSection.classList.contains('show');
+            
+            if (isOpen) {
+                // Close
+                detailsSection.classList.remove('show');
+                detailsSection.style.display = 'none';
+                toggleBtn.classList.remove('active');
+                toggleBtn.querySelector('.toggle-text').textContent = '상세 내용 보기';
+            } else {
+                // Open
+                detailsSection.style.display = 'block';
+                setTimeout(() => {
+                    detailsSection.classList.add('show');
+                }, 10);
+                toggleBtn.classList.add('active');
+                toggleBtn.querySelector('.toggle-text').textContent = '상세 내용 닫기';
+                
+                // Smooth scroll to details
+                setTimeout(() => {
+                    detailsSection.scrollIntoView({ 
+                        behavior: 'smooth', 
+                        block: 'nearest' 
+                    });
+                }, 300);
+            }
+        });
+    }
+
+    /**
      * Add to global scope for potential external use
      */
     window.LetAIWork = {
         initSmoothScroll,
         initScrollAnimations,
         initProjectTabs,
+        initFrameworkToggle,
         debounce
     };
 
