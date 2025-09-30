@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#0a9b7a"/>
+      <stop offset="100%" stop-color="#06d6a0"/>
+    </linearGradient>
+    <filter id="s" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="12" stdDeviation="12" flood-color="rgba(0,0,0,0.25)"/>
+    </filter>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <g fill="#fff" font-family="system-ui, -apple-system, Segoe UI, Roboto, Arial">
+    <text x="80" y="260" font-size="120" font-weight="800" letter-spacing="-4" filter="url(#s)">Let AI WORK</text>
+    <text x="80" y="360" font-size="44" font-weight="600" opacity="0.95">AI 실무 교육 전문 브랜드</text>
+    <text x="80" y="430" font-size="28" opacity="0.9">기업 맞춤형 AI 활용 교육으로 업무 자동화 역량을 키워보세요</text>
+  </g>
+</svg>

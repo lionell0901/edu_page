@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Let AI Work 커리큘럼 - AI Transformation을 위한 체계적인 7단계 의사결정 프로세스 교육">
+    <meta name="keywords" content="AI교육, AI변혁, 의사결정프로세스, 업무자동화, AI전문가양성">
+    <title>Let AI Work 커리큘럼 - AI Transformation 교육</title>
+    
+    <!-- Fonts: Pretendard via CDN -->
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+    <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            /* Color System */
+            --primary-color: #0a9b7a;
+            --primary-light: #06d6a0;
+            --primary-dark: #078c6a;
+            --accent-warm: #ff6b35;
+            --accent-cool: #2196f3;
+            --accent-purple: #8b5cf6;
+            --accent-amber: #f59e0b;
+            
+            /* Text Colors */
+            --text-primary: #1a1a1a;
+            --text-secondary: #444;
+            --text-tertiary: #666;
+            --text-muted: #999;
+            
+            /* Surface Colors */
+            --surface-primary: #ffffff;
+            --surface-secondary: #fafafa;
+            --surface-elevated: #f5f5f5;
+            
+            /* Card System */
+            --card-bg: linear-gradient(180deg, #fff, #fafafa);
+            --card-border: 1px solid rgba(209, 213, 219, 0.55);
+            --card-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            --card-shadow-hover: 0 8px 25px rgba(10,155,122,0.12);
+            --card-hover-lift: translateY(-4px);
+            
+            /* Layout */
+            --radius: 16px;
+            --radius-sm: 8px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-bounce: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        body {
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background: var(--surface-primary);
+            scroll-behavior: smooth;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .header-content {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        .back-link {
+            position: absolute;
+            top: 2rem;
+            left: 2rem;
+            color: rgba(255,255,255,0.9);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: var(--transition);
+            z-index: 3;
+        }
+
+        .back-link:hover {
+            color: white;
+            transform: translateX(-5px);
+        }
+
+        .header-title {
+            font-size: clamp(2.5rem, 5vw, 3.5rem);
+            font-weight: 300;
+            margin-bottom: 1rem;
+            letter-spacing: -1px;
+        }
+
+        .header-title strong {
+            font-weight: 700;
+            background: linear-gradient(135deg, #ffffff, rgba(255,255,255,0.8));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header-subtitle {
+            font-size: clamp(1.1rem, 2.5vw, 1.3rem);
+            opacity: 0.9;
+            margin-bottom: 2rem;
+            font-weight: 300;
+        }
+
+        .transformation-badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.15);
+            color: white;
+            padding: 8px 24px;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        /* Main Content */
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        .intro-section {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .intro-title {
+            font-size: clamp(2rem, 4vw, 2.8rem);
+            font-weight: 200;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            letter-spacing: -0.5px;
+        }
+
+        .intro-title strong {
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .intro-desc {
+            font-size: clamp(1.1rem, 2vw, 1.2rem);
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 0 auto 2rem;
+            line-height: 1.8;
+        }
+
+        .highlight-box {
+            background: var(--card-bg);
+            border: var(--card-border);
+            border-left: 4px solid var(--accent-warm);
+            border-radius: var(--radius);
+            padding: 2rem;
+            margin: 2rem auto;
+            max-width: 800px;
+            box-shadow: var(--card-shadow);
+            transition: var(--transition);
+        }
+
+        .highlight-box:hover {
+            transform: var(--card-hover-lift);
+            box-shadow: var(--card-shadow-hover);
+        }
+
+        .highlight-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--accent-warm);
+            margin-bottom: 1rem;
+        }
+
+        /* Process Steps */
+        .process-section {
+            margin: 4rem 0;
+        }
+
+        .section-title {
+            font-size: clamp(1.8rem, 3vw, 2.4rem);
+            font-weight: 200;
+            text-align: center;
+            margin-bottom: 3rem;
+            color: var(--text-primary);
+            letter-spacing: -0.5px;
+        }
+
+        .section-title strong {
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .process-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .process-step {
+            background: var(--card-bg);
+            border: var(--card-border);
+            border-radius: var(--radius);
+            padding: 2rem;
+            box-shadow: var(--card-shadow);
+            transition: var(--transition-bounce);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .process-step::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color), var(--primary-light));
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
+            transform-origin: left;
+        }
+
+        .process-step:hover {
+            transform: var(--card-hover-lift);
+            box-shadow: var(--card-shadow-hover);
+        }
+
+        .process-step:hover::before {
+            transform: scaleX(1);
+        }
+
+        .step-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .step-number {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.2rem;
+            margin-right: 1rem;
+            box-shadow: 0 4px 12px rgba(10, 155, 122, 0.3);
+        }
+
+        .step-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            letter-spacing: -0.3px;
+        }
+
+        .step-subtitle {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            font-weight: 500;
+            margin-top: 0.3rem;
+        }
+
+        .step-content {
+            list-style: none;
+        }
+
+        .step-content li {
+            padding: 0.6rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        .step-content li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: var(--primary-color);
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            background: var(--surface-secondary);
+            border-radius: var(--radius);
+            padding: 3rem 2rem;
+            text-align: center;
+            margin-top: 4rem;
+            border: var(--card-border);
+        }
+
+        .cta-title {
+            font-size: clamp(1.8rem, 3vw, 2.2rem);
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+
+        .cta-desc {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            color: white;
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: var(--transition-bounce);
+            box-shadow: 0 6px 20px rgba(10, 155, 122, 0.3);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 12px 30px rgba(10, 155, 122, 0.4);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header {
+                padding: 2rem 1rem;
+            }
+
+            .back-link {
+                position: relative;
+                top: auto;
+                left: auto;
+                display: block;
+                margin-bottom: 1rem;
+                text-align: left;
+            }
+
+            .main-content {
+                padding: 2rem 1rem;
+            }
+
+            .process-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .process-step {
+                padding: 1.5rem;
+            }
+
+            .step-header {
+                flex-direction: column;
+                text-align: center;
+                margin-bottom: 1rem;
+            }
+
+            .step-number {
+                margin-right: 0;
+                margin-bottom: 0.5rem;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation: none !important;
+                transition: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <a href="edu_info_refined.html" class="back-link">← 메인으로 돌아가기</a>
+        <div class="header-content">
+            <div class="transformation-badge">AI TRANSFORMATION</div>
+            <h1 class="header-title">Let AI Work <strong>커리큘럼</strong></h1>
+            <p class="header-subtitle">기업의 디지털 변혁을 이끄는 AI 의사결정 전문가 양성 과정</p>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <section class="intro-section">
+            <h2 class="intro-title">단순한 교육이 아닌, <strong>조직의 AI 변혁</strong></h2>
+            <p class="intro-desc">
+                Let AI Work는 개인의 스킬업을 넘어 조직 전체의 AI Transformation을 목표로 합니다.<br>
+                체계적인 방법론과 실무 중심 교육으로 진정한 AI 의사결정 전문가를 양성합니다.
+            </p>
+            
+            <div class="highlight-box">
+                <h3 class="highlight-title">🎯 교육 목표: AI-First 조직 구축</h3>
+                <p>기존의 업무 방식을 AI 기반으로 완전히 재설계하여, 데이터 수집부터 의사결정 실행까지 
+                전 과정을 자동화하는 차세대 업무 환경을 만들어갑니다.</p>
+            </div>
+        </section>
+
+        <section class="process-section">
+            <h2 class="section-title">체계적인 <strong>7단계 의사결정 프로세스</strong></h2>
+            
+            <div class="process-grid">
+                <div class="process-step">
+                    <div class="step-header">
+                        <div class="step-number">1</div>
+                        <div>
+                            <h3 class="step-title">정보의 수집</h3>
+                            <p class="step-subtitle">Data Gathering</p>
+                        </div>
+                    </div>
+                    <ul class="step-content">
+                        <li>웹 크롤링, API 연동, IoT/센서 데이터 수집</li>
+                        <li>이메일, 보고서, 회의록 등 내부 문서 자동 수집</li>
+                        <li>고객 대화, 콜센터 기록, 로그 데이터 자동 취합</li>
+                    </ul>
+                </div>
+
+                <div class="process-step">
+                    <div class="step-header">
+                        <div class="step-number">2</div>
+                        <div>
+                            <h3 class="step-title">정보의 정제·구조화</h3>
+                            <p class="step-subtitle">Data Cleaning & Structuring</p>
+                        </div>
+                    </div>
+                    <ul class="step-content">
+                        <li>중복 제거, 오류 수정, 결측치 보완</li>
+                        <li>비정형 데이터 → 정형 데이터로 변환 (PDF → DB화, 음성 → 텍스트)</li>
+                        <li>LLM을 이용한 태깅, 메타데이터 생성</li>
+                    </ul>
+                </div>
+
+                <div class="process-step">
+                    <div class="step-header">
+                        <div class="step-number">3</div>
+                        <div>
+                            <h3 class="step-title">정보의 분류·요약</h3>
+                            <p class="step-subtitle">Classification & Summarization</p>
+                        </div>
+                    </div>
+                    <ul class="step-content">
+                        <li>LLM/ML 기반 주제 분류, 클러스터링</li>
+                        <li>문서·대화 요약, 하이라이트 추출</li>
+                        <li>중요도/긴급도/우선순위에 따른 자동 라벨링</li>
+                    </ul>
+                </div>
+
+                <div class="process-step">
+                    <div class="step-header">
+                        <div class="step-number">4</div>
+                        <div>
+                            <h3 class="step-title">정보 분석·통찰 도출</h3>
+                            <p class="step-subtitle">Analysis & Insight Extraction</p>
+                        </div>
+                    </div>
+                    <ul class="step-content">
+                        <li>통계적 분석, 예측 모델 적용</li>
+                        <li>트렌드 감지, 이상 탐지</li>
+                        <li>LLM 기반 "왜 이런 결과가 나왔는가" 설명</li>
+                    </ul>
+                </div>
+
+                <div class="process-step">
+                    <div class="step-header">
+                        <div class="step-number">5</div>
+                        <div>
+                            <h3 class="step-title">정보에 근거한 판단</h3>
+                            <p class="step-subtitle">Decision Making</p>
+                        </div>
+                    </div>
+                    <ul class="step-content">
+                        <li>규칙 기반 의사결정(Rule-based decision)</li>
+                        <li>강화학습/시뮬레이션 기반 최적화</li>
+                        <li>추천 시스템 ("다음 액션은 A가 적절합니다")</li>
+                    </ul>
+                </div>
+
+                <div class="process-step">
+                    <div class="step-header">
+                        <div class="step-number">6</div>
+                        <div>
+                            <h3 class="step-title">의사결정 실행·자동화</h3>
+                            <p class="step-subtitle">Action Automation</p>
+                        </div>
+                    </div>
+                    <ul class="step-content">
+                        <li>실제 업무 처리 (메일 발송, 보고서 작성, ERP 입력 등)</li>
+                        <li>워크플로우 자동화 (Zapier, n8n, Airflow 등)</li>
+                        <li>API 호출을 통한 실시간 액션 (주문 승인, 계약 전송)</li>
+                    </ul>
+                </div>
+
+                <div class="process-step">
+                    <div class="step-header">
+                        <div class="step-number">7</div>
+                        <div>
+                            <h3 class="step-title">지식 축적·학습</h3>
+                            <p class="step-subtitle">Knowledge Accumulation & Learning</p>
+                        </div>
+                    </div>
+                    <ul class="step-content">
+                        <li>사내 데이터베이스/지식그래프 업데이트</li>
+                        <li>재학습/피드백 루프 구축 (사용자 피드백 → 모델 개선)</li>
+                        <li>조직 내 "집단지성" 자동화 (FAQ 자동 업데이트, 매뉴얼 자동 보완)</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="cta-section">
+            <h2 class="cta-title">당신의 조직도 AI Transformation을 시작하세요</h2>
+            <p class="cta-desc">
+                이 7단계 프로세스를 마스터하면, 개인의 업무 효율성은 물론 
+                조직 전체의 의사결정 품질과 속도가 혁신적으로 개선됩니다.
+            </p>
+            <a href="mailto:lio@aisahub.com?subject=AI Transformation 교육 문의" class="cta-button">
+                교육 상담 신청하기
+            </a>
+        </section>
+    </main>
+</body>
+</html>
