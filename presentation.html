@@ -1,0 +1,1060 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Let AI Work - AI 실무 교육 프레젠테이션</title>
+
+    <!-- Fonts: Pretendard via CDN -->
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+    <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #0a9b7a;
+            --primary-dark: #087d62;
+            --primary-light: #0ec49a;
+            --accent-color: #ff6b6b;
+            --bg-dark: #0f1419;
+            --bg-gradient: linear-gradient(135deg, #0f1419 0%, #1a2332 100%);
+            --text-primary: #ffffff;
+            --text-secondary: #b0b8c1;
+            --slide-bg: #ffffff;
+            --slide-shadow: 0 10px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        body {
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+            background: var(--bg-gradient);
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .presentation-container {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .slide-wrapper {
+            width: 1280px;
+            height: 720px;
+            background: var(--slide-bg);
+            border-radius: 8px;
+            box-shadow: var(--slide-shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .slide {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+            padding: 60px 80px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .slide.active {
+            opacity: 1;
+            z-index: 1;
+        }
+
+        /* Navigation Buttons */
+        .nav-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(10, 155, 122, 0.1);
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 10;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .nav-btn:hover {
+            background: var(--primary-color);
+            color: white;
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .nav-btn.prev {
+            left: -80px;
+        }
+
+        .nav-btn.next {
+            right: -80px;
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .nav-btn:disabled:hover {
+            background: rgba(10, 155, 122, 0.1);
+            color: var(--primary-color);
+            transform: translateY(-50%) scale(1);
+        }
+
+        /* Page Indicator */
+        .page-indicator {
+            position: absolute;
+            bottom: 30px;
+            right: 80px;
+            font-size: 16px;
+            color: var(--text-secondary);
+            font-weight: 600;
+            z-index: 10;
+        }
+
+        .page-indicator .current {
+            color: var(--primary-color);
+            font-size: 20px;
+        }
+
+        /* Slide 1: Cover */
+        .slide-cover {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            color: white;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .slide-cover .brand {
+            font-size: 24px;
+            font-weight: 300;
+            margin-bottom: 40px;
+            opacity: 0.9;
+        }
+
+        .slide-cover .logo {
+            font-size: 96px;
+            font-weight: 800;
+            margin-bottom: 30px;
+            line-height: 1;
+        }
+
+        .slide-cover .logo span {
+            background: linear-gradient(135deg, #fff 0%, #0ec49a 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .slide-cover .tagline {
+            font-size: 28px;
+            font-weight: 300;
+            line-height: 1.6;
+            opacity: 0.95;
+        }
+
+        /* Common Slide Elements */
+        .slide-title {
+            font-size: 48px;
+            font-weight: 800;
+            margin-bottom: 20px;
+            color: #1a1a1a;
+        }
+
+        .slide-title .highlight {
+            color: var(--primary-color);
+        }
+
+        .slide-subtitle {
+            font-size: 20px;
+            color: #666;
+            margin-bottom: 50px;
+            font-weight: 400;
+        }
+
+        /* Problem & Solution Slide */
+        .split-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            height: 100%;
+        }
+
+        .split-section {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .split-section h3 {
+            font-size: 32px;
+            margin-bottom: 30px;
+            font-weight: 700;
+        }
+
+        .problem-section h3 {
+            color: var(--accent-color);
+        }
+
+        .solution-section h3 {
+            color: var(--primary-color);
+        }
+
+        .split-section p {
+            font-size: 18px;
+            line-height: 1.8;
+            color: #444;
+        }
+
+        .icon-large {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 20px;
+        }
+
+        /* Roadmap Slide */
+        .roadmap-flow {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 40px;
+        }
+
+        .roadmap-step {
+            flex: 1;
+            text-align: center;
+            position: relative;
+        }
+
+        .roadmap-step-number {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            font-weight: 800;
+            margin: 0 auto 20px;
+        }
+
+        .roadmap-step h4 {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: #1a1a1a;
+        }
+
+        .roadmap-step p {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .roadmap-arrow {
+            font-size: 32px;
+            color: var(--primary-color);
+            margin: 0 20px;
+        }
+
+        /* Detail List */
+        .detail-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .detail-item {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 12px;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .detail-item h4 {
+            font-size: 20px;
+            margin-bottom: 12px;
+            color: #1a1a1a;
+        }
+
+        .detail-item p {
+            font-size: 16px;
+            color: #555;
+            line-height: 1.6;
+        }
+
+        .detail-item ul {
+            list-style: none;
+            margin-top: 15px;
+        }
+
+        .detail-item li {
+            font-size: 15px;
+            color: #666;
+            padding: 8px 0;
+            padding-left: 24px;
+            position: relative;
+        }
+
+        .detail-item li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        /* Expert Card */
+        .expert-card {
+            background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary-color) 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 16px;
+            margin-top: 30px;
+        }
+
+        .expert-card h4 {
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+
+        .expert-features {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .expert-feature {
+            text-align: center;
+        }
+
+        .expert-feature .icon {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 15px;
+        }
+
+        .expert-feature h5 {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .expert-feature p {
+            font-size: 14px;
+            opacity: 0.9;
+            line-height: 1.5;
+        }
+
+        .case-study {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+
+        /* Framework Flow */
+        .framework-flow {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+
+        .flow-step {
+            text-align: center;
+            flex: 0 0 120px;
+        }
+
+        .flow-step-icon {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            margin: 0 auto 15px;
+            position: relative;
+        }
+
+        .flow-step-number {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            width: 24px;
+            height: 24px;
+            background: var(--accent-color);
+            border-radius: 50%;
+            font-size: 12px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .flow-step h5 {
+            font-size: 16px;
+            margin-bottom: 5px;
+            color: #1a1a1a;
+        }
+
+        .flow-step p {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .flow-arrow-small {
+            font-size: 24px;
+            color: var(--primary-color);
+            margin: 0 5px;
+        }
+
+        /* Process Detail Grid */
+        .process-detail-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .process-card {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 12px;
+            position: relative;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .process-number {
+            position: absolute;
+            top: -15px;
+            left: 20px;
+            width: 40px;
+            height: 40px;
+            background: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .process-card h5 {
+            font-size: 18px;
+            margin-bottom: 12px;
+            color: #1a1a1a;
+            margin-top: 10px;
+        }
+
+        .process-card p {
+            font-size: 15px;
+            color: #555;
+            line-height: 1.6;
+        }
+
+        /* Benefits & Methods */
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .benefit-card {
+            background: linear-gradient(135deg, #fff 0%, #f8f9fa 100%);
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            border: 2px solid #e9ecef;
+            transition: all 0.3s ease;
+        }
+
+        .benefit-card:hover {
+            border-color: var(--primary-color);
+            transform: translateY(-5px);
+        }
+
+        .benefit-icon {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 20px;
+        }
+
+        .benefit-card h4 {
+            font-size: 20px;
+            margin-bottom: 12px;
+            color: #1a1a1a;
+        }
+
+        .benefit-card p {
+            font-size: 15px;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .method-list {
+            display: flex;
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .method-item {
+            flex: 1;
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .method-item .icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+
+        .method-item h5 {
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: #1a1a1a;
+        }
+
+        .method-item p {
+            font-size: 14px;
+            color: #666;
+        }
+
+        /* CTA Slide */
+        .cta-content {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .cta-content h2 {
+            font-size: 56px;
+            margin-bottom: 20px;
+            color: #1a1a1a;
+        }
+
+        .cta-content .highlight {
+            color: var(--primary-color);
+        }
+
+        .cta-content p {
+            font-size: 24px;
+            color: #666;
+            margin-bottom: 50px;
+        }
+
+        .contact-box {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 16px;
+            margin-top: 40px;
+        }
+
+        .contact-info {
+            font-size: 20px;
+            line-height: 2;
+        }
+
+        .contact-info strong {
+            font-weight: 700;
+        }
+
+        .contact-info a {
+            color: white;
+            text-decoration: none;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.5);
+            transition: border-color 0.3s ease;
+        }
+
+        .contact-info a:hover {
+            border-bottom-color: white;
+        }
+
+        /* SVG Icons */
+        .svg-icon {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Keyboard Navigation Hint */
+        .keyboard-hint {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: var(--text-secondary);
+            font-size: 14px;
+            opacity: 0.7;
+            z-index: 5;
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+        <div class="slide-wrapper">
+            <!-- Slide 1: Cover -->
+            <div class="slide slide-cover active">
+                <div class="brand">AisaHub</div>
+                <div class="logo">Let AI <span>WORK</span></div>
+                <div class="tagline">AI가 대신 일하도록<br>우리는 더 가치 있는 일에 집중합니다</div>
+            </div>
+
+            <!-- Slide 2: Problem & Solution -->
+            <div class="slide">
+                <h2 class="slide-title">현재 우리가 직면한 <span class="highlight">문제</span></h2>
+                <div class="split-content">
+                    <div class="split-section problem-section">
+                        <svg class="icon-large" viewBox="0 0 100 100" fill="none">
+                            <circle cx="50" cy="50" r="45" stroke="#ff6b6b" stroke-width="3"/>
+                            <path d="M30 30 L70 70 M70 30 L30 70" stroke="#ff6b6b" stroke-width="4" stroke-linecap="round"/>
+                        </svg>
+                        <h3>반복 업무의 늪</h3>
+                        <p>매일 반복되는 데이터 정리, 보고서 작성, 일정 관리...<br><br>
+                        이러한 단순 반복 업무가 <strong>창의적 사고</strong>와 <strong>전략적 업무 시간</strong>을 빼앗고 있습니다.</p>
+                    </div>
+                    <div class="split-section solution-section">
+                        <svg class="icon-large" viewBox="0 0 100 100" fill="none">
+                            <circle cx="50" cy="50" r="45" stroke="#0a9b7a" stroke-width="3"/>
+                            <path d="M30 50 L45 65 L70 35" stroke="#0a9b7a" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <h3>AI 자동화 혁신</h3>
+                        <p>AI가 반복 업무를 담당하게 하여,<br><br>
+                        구성원들이 <strong>더 가치 있고 창의적인 일</strong>에 집중할 수 있도록 조직 전체를 혁신합니다.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 3: 3-Step Roadmap -->
+            <div class="slide">
+                <h2 class="slide-title">3단계 교육 <span class="highlight">로드맵</span></h2>
+                <p class="slide-subtitle">개인 스킬업을 넘어 조직 전체의 AI Transformation</p>
+
+                <div class="roadmap-flow">
+                    <div class="roadmap-step">
+                        <div class="roadmap-step-number">1</div>
+                        <h4>기본 교육</h4>
+                        <p>AI 개론<br>프롬프트 엔지니어링</p>
+                    </div>
+                    <div class="roadmap-arrow">→</div>
+                    <div class="roadmap-step">
+                        <div class="roadmap-step-number">2</div>
+                        <h4>바이브코딩</h4>
+                        <p>AI와 함께 코딩<br>업무 자동화 구현</p>
+                    </div>
+                    <div class="roadmap-arrow">→</div>
+                    <div class="roadmap-step">
+                        <div class="roadmap-step-number">3</div>
+                        <h4>전문가 양성</h4>
+                        <p>사내 AI 리더<br>실무 프로젝트 완성</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 4: Stage 1-2 Detail -->
+            <div class="slide">
+                <h2 class="slide-title">1-2단계: <span class="highlight">기본부터 실전까지</span></h2>
+                <p class="slide-subtitle">AI 이해부터 실무 자동화 구현까지</p>
+
+                <div class="detail-grid">
+                    <div class="detail-item">
+                        <h4>🧠 AI 특장점 및 개론</h4>
+                        <p>AI 핵심 개념과 비즈니스 활용 가능성 이해</p>
+                    </div>
+                    <div class="detail-item">
+                        <h4>✍️ 프롬프트 엔지니어링</h4>
+                        <p>ChatGPT, Claude, Gemini 실무 활용 기법</p>
+                    </div>
+                    <div class="detail-item">
+                        <h4>📊 구글 앱스크립트</h4>
+                        <p>시트, 문서, 이메일 자동화로 업무 효율 극대화</p>
+                    </div>
+                    <div class="detail-item">
+                        <h4>🌐 웹페이지 제작</h4>
+                        <p>비개발자도 AI와 함께 웹페이지 직접 제작</p>
+                    </div>
+                </div>
+
+                <div class="detail-item" style="margin-top: 30px;">
+                    <h4>🔄 파이썬 크롤링 자동화</h4>
+                    <ul>
+                        <li>파이썬 기초부터 웹 크롤링까지</li>
+                        <li>데이터 수집 및 처리 자동화</li>
+                        <li>AI 도움으로 비개발자도 쉽게 구현</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slide 5: Stage 3 Expert -->
+            <div class="slide">
+                <h2 class="slide-title">3단계: <span class="highlight">전문가 양성</span></h2>
+                <p class="slide-subtitle">사내 AI 리더로 성장하여 조직 전체를 혁신합니다</p>
+
+                <div class="expert-card">
+                    <h4>현업 교육 전파자 양성</h4>
+                    <div class="expert-features">
+                        <div class="expert-feature">
+                            <svg class="icon" viewBox="0 0 100 100" fill="white">
+                                <circle cx="50" cy="35" r="15"/>
+                                <circle cx="30" cy="70" r="10"/>
+                                <circle cx="70" cy="70" r="10"/>
+                                <line x1="50" y1="50" x2="30" y2="60" stroke="white" stroke-width="3"/>
+                                <line x1="50" y1="50" x2="70" y2="60" stroke="white" stroke-width="3"/>
+                            </svg>
+                            <h5>사내 강사 양성</h5>
+                            <p>동료에게 AI 활용법을 전파할 수 있는 수준까지 심화 교육</p>
+                        </div>
+                        <div class="expert-feature">
+                            <svg class="icon" viewBox="0 0 100 100" fill="white">
+                                <rect x="20" y="30" width="60" height="40" rx="5" stroke="white" stroke-width="3" fill="none"/>
+                                <circle cx="50" cy="50" r="8" fill="white"/>
+                                <path d="M50 50 L50 30 M50 50 L70 50" stroke="white" stroke-width="3"/>
+                            </svg>
+                            <h5>부서별 맞춤 적용</h5>
+                            <p>각 부서 특성에 맞는 AI 자동화 솔루션 직접 설계</p>
+                        </div>
+                        <div class="expert-feature">
+                            <svg class="icon" viewBox="0 0 100 100" fill="white">
+                                <rect x="25" y="20" width="50" height="60" rx="5" stroke="white" stroke-width="3" fill="none"/>
+                                <line x1="35" y1="35" x2="65" y2="35" stroke="white" stroke-width="3"/>
+                                <line x1="35" y1="50" x2="65" y2="50" stroke="white" stroke-width="3"/>
+                                <line x1="35" y1="65" x2="55" y2="65" stroke="white" stroke-width="3"/>
+                            </svg>
+                            <h5>실무 프로젝트 지원</h5>
+                            <p>개발자가 투입되어 실무 프로젝트를 함께 완성</p>
+                        </div>
+                    </div>
+                    <div class="case-study">
+                        <strong>💼 실제 사례:</strong> 경쟁사 광고 모니터링 시스템 (개발자 1주일 투입) | 차량운행 현황 점검 시스템 (개발자 2일 투입)
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 6: AX Framework Overview -->
+            <div class="slide">
+                <h2 class="slide-title">AX <span class="highlight">자동화 방법론</span></h2>
+                <p class="slide-subtitle">의사결정부터 실행까지 전 과정을 AI로 자동화</p>
+
+                <div class="framework-flow">
+                    <div class="flow-step">
+                        <div class="flow-step-icon">
+                            <svg class="svg-icon" viewBox="0 0 50 50" fill="white">
+                                <path d="M25 5 L30 20 L45 20 L33 30 L38 45 L25 35 L12 45 L17 30 L5 20 L20 20 Z"/>
+                            </svg>
+                            <div class="flow-step-number">1</div>
+                        </div>
+                        <h5>수집</h5>
+                        <p>데이터<br>수집</p>
+                    </div>
+                    <div class="flow-arrow-small">→</div>
+                    <div class="flow-step">
+                        <div class="flow-step-icon">
+                            <svg class="svg-icon" viewBox="0 0 50 50" fill="white">
+                                <circle cx="25" cy="25" r="20" stroke="white" stroke-width="2" fill="none"/>
+                                <path d="M15 25 L23 33 L35 17" stroke="white" stroke-width="3" fill="none"/>
+                            </svg>
+                            <div class="flow-step-number">2</div>
+                        </div>
+                        <h5>정제</h5>
+                        <p>데이터<br>클리닝</p>
+                    </div>
+                    <div class="flow-arrow-small">→</div>
+                    <div class="flow-step">
+                        <div class="flow-step-icon">
+                            <svg class="svg-icon" viewBox="0 0 50 50" fill="white">
+                                <rect x="10" y="10" width="12" height="12" rx="2"/>
+                                <rect x="28" y="10" width="12" height="12" rx="2"/>
+                                <rect x="10" y="28" width="12" height="12" rx="2"/>
+                                <rect x="28" y="28" width="12" height="12" rx="2"/>
+                            </svg>
+                            <div class="flow-step-number">3</div>
+                        </div>
+                        <h5>분류</h5>
+                        <p>자동<br>분류</p>
+                    </div>
+                    <div class="flow-arrow-small">→</div>
+                    <div class="flow-step">
+                        <div class="flow-step-icon">
+                            <svg class="svg-icon" viewBox="0 0 50 50" fill="white">
+                                <circle cx="25" cy="25" r="18" stroke="white" stroke-width="2" fill="none"/>
+                                <circle cx="25" cy="25" r="3"/>
+                                <line x1="25" y1="7" x2="25" y2="15" stroke="white" stroke-width="2"/>
+                                <line x1="43" y1="25" x2="35" y2="25" stroke="white" stroke-width="2"/>
+                            </svg>
+                            <div class="flow-step-number">4</div>
+                        </div>
+                        <h5>분석</h5>
+                        <p>인사이트<br>도출</p>
+                    </div>
+                    <div class="flow-arrow-small">→</div>
+                    <div class="flow-step">
+                        <div class="flow-step-icon">
+                            <svg class="svg-icon" viewBox="0 0 50 50" fill="white">
+                                <circle cx="25" cy="15" r="8"/>
+                                <path d="M25 23 L25 45 M25 35 L15 30 M25 35 L35 30"/>
+                            </svg>
+                            <div class="flow-step-number">5</div>
+                        </div>
+                        <h5>의사결정</h5>
+                        <p>최적<br>대안</p>
+                    </div>
+                    <div class="flow-arrow-small">→</div>
+                    <div class="flow-step">
+                        <div class="flow-step-icon">
+                            <svg class="svg-icon" viewBox="0 0 50 50" fill="white">
+                                <path d="M10 25 L20 15 L20 22 L40 22 L40 28 L20 28 L20 35 Z"/>
+                            </svg>
+                            <div class="flow-step-number">6</div>
+                        </div>
+                        <h5>실행</h5>
+                        <p>자동<br>실행</p>
+                    </div>
+                    <div class="flow-arrow-small">→</div>
+                    <div class="flow-step">
+                        <div class="flow-step-icon">
+                            <svg class="svg-icon" viewBox="0 0 50 50" fill="white">
+                                <rect x="10" y="15" width="30" height="20" rx="2" stroke="white" stroke-width="2" fill="none"/>
+                                <line x1="15" y1="22" x2="35" y2="22" stroke="white" stroke-width="2"/>
+                                <line x1="15" y1="28" x2="35" y2="28" stroke="white" stroke-width="2"/>
+                            </svg>
+                            <div class="flow-step-number">7</div>
+                        </div>
+                        <h5>학습</h5>
+                        <p>지속<br>개선</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 7: AX Framework Stage 1-4 -->
+            <div class="slide">
+                <h2 class="slide-title">AX 1-4단계: <span class="highlight">데이터 처리</span></h2>
+                <p class="slide-subtitle">수집부터 분석까지 AI 자동화</p>
+
+                <div class="process-detail-grid">
+                    <div class="process-card">
+                        <div class="process-number">1</div>
+                        <h5>데이터 수집 (Data Gathering)</h5>
+                        <p>웹 크롤링, API 연동, 문서 자동 취합으로 업무에 필요한 모든 데이터를 자동으로 수집합니다.</p>
+                    </div>
+                    <div class="process-card">
+                        <div class="process-number">2</div>
+                        <h5>데이터 정제 (Data Cleaning)</h5>
+                        <p>중복 제거, 오류 수정, 표준화를 자동화하여 데이터 품질을 높이고 분석 시간을 단축합니다.</p>
+                    </div>
+                    <div class="process-card">
+                        <div class="process-number">3</div>
+                        <h5>데이터 분류 (Data Classification)</h5>
+                        <p>AI가 데이터를 자동으로 카테고리화합니다. 고객 세그먼트, 문서 분류, 리드 스코어링 등이 가능합니다.</p>
+                    </div>
+                    <div class="process-card">
+                        <div class="process-number">4</div>
+                        <h5>데이터 분석 (Data Analysis)</h5>
+                        <p>AI가 패턴을 발견하고 인사이트를 도출합니다. 트렌드 분석, 이상치 탐지, 예측 모델링을 수행합니다.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 8: AX Framework Stage 5-7 -->
+            <div class="slide">
+                <h2 class="slide-title">AX 5-7단계: <span class="highlight">의사결정 & 실행</span></h2>
+                <p class="slide-subtitle">최적 대안 선택부터 지속적 개선까지</p>
+
+                <div class="process-detail-grid">
+                    <div class="process-card">
+                        <div class="process-number">5</div>
+                        <h5>의사결정 (Decision Making)</h5>
+                        <p>AI가 최적의 대안을 제시합니다. 시나리오 시뮬레이션, 리스크 평가, 우선순위 결정을 지원합니다.</p>
+                    </div>
+                    <div class="process-card">
+                        <div class="process-number">6</div>
+                        <h5>액션 자동화 (Action Automation)</h5>
+                        <p>결정된 사항을 AI가 자동으로 실행합니다. 이메일 발송, 문서 생성, 시스템 업데이트 등을 처리합니다.</p>
+                    </div>
+                    <div class="process-card" style="grid-column: 1 / -1; max-width: 600px; margin: 0 auto;">
+                        <div class="process-number">7</div>
+                        <h5>지속적 학습 (Continuous Learning)</h5>
+                        <p>AI가 실행 결과를 학습하여 프로세스를 개선합니다. 피드백 수집, 성과 모니터링, 모델 업데이트를 통해 지속적으로 진화합니다.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 9: Benefits & Methods -->
+            <div class="slide">
+                <h2 class="slide-title">기대 <span class="highlight">효과</span></h2>
+                <p class="slide-subtitle">업무 효율 향상과 조직 혁신</p>
+
+                <div class="benefits-grid">
+                    <div class="benefit-card">
+                        <svg class="benefit-icon" viewBox="0 0 100 100" fill="none">
+                            <circle cx="50" cy="50" r="40" stroke="#0a9b7a" stroke-width="4"/>
+                            <path d="M35 50 L45 60 L65 35" stroke="#0a9b7a" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <h4>업무 시간 절감</h4>
+                        <p>반복 업무 자동화로 업무 시간 60% 이상 절감</p>
+                    </div>
+                    <div class="benefit-card">
+                        <svg class="benefit-icon" viewBox="0 0 100 100" fill="none">
+                            <path d="M20 80 L20 60 L35 45 L50 55 L65 30 L80 40 L80 80 Z" fill="#0a9b7a" opacity="0.2"/>
+                            <path d="M20 60 L35 45 L50 55 L65 30 L80 40" stroke="#0a9b7a" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <h4>생산성 향상</h4>
+                        <p>창의적 업무에 집중하여 생산성 3배 향상</p>
+                    </div>
+                    <div class="benefit-card">
+                        <svg class="benefit-icon" viewBox="0 0 100 100" fill="none">
+                            <circle cx="50" cy="40" r="15" stroke="#0a9b7a" stroke-width="4"/>
+                            <path d="M50 55 L50 85 M35 70 L50 75 L65 70" stroke="#0a9b7a" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                            <circle cx="30" cy="75" r="8" fill="#0a9b7a"/>
+                            <circle cx="70" cy="75" r="8" fill="#0a9b7a"/>
+                        </svg>
+                        <h4>조직 혁신</h4>
+                        <p>전사 AI 역량 강화로 디지털 전환 가속화</p>
+                    </div>
+                </div>
+
+                <div style="margin-top: 40px;">
+                    <h3 style="font-size: 24px; margin-bottom: 20px; text-align: center; color: #1a1a1a;">유연한 교육 방식</h3>
+                    <div class="method-list">
+                        <div class="method-item">
+                            <div class="icon">🏢</div>
+                            <h5>출강 교육</h5>
+                            <p>귀사 방문하여 실습 중심 현장 교육</p>
+                        </div>
+                        <div class="method-item">
+                            <div class="icon">💻</div>
+                            <h5>온라인 강의</h5>
+                            <p>실시간 화상 교육 및 Q&A</p>
+                        </div>
+                        <div class="method-item">
+                            <div class="icon">👥</div>
+                            <h5>소그룹 스터디</h5>
+                            <p>소수 인원 집중 심화 과정</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 10: CTA -->
+            <div class="slide">
+                <div class="cta-content">
+                    <h2>지금 바로 <span class="highlight">시작하세요</span></h2>
+                    <p>AI 혁신의 첫 걸음, AisaHub와 함께하세요</p>
+
+                    <div class="contact-box">
+                        <div class="contact-info">
+                            <p><strong>📧 이메일</strong>: <a href="mailto:lio@aisahub.com">lio@aisahub.com</a></p>
+                            <p><strong>📞 전화</strong>: 02-1234-5678</p>
+                            <p><strong>📍 주소</strong>: 서울특별시 강남구 테헤란로 123</p>
+                        </div>
+                        <p style="margin-top: 30px; font-size: 18px; opacity: 0.9;">© 2024 AisaHub. All rights reserved.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigation Buttons -->
+            <button class="nav-btn prev" id="prevBtn">‹</button>
+            <button class="nav-btn next" id="nextBtn">›</button>
+
+            <!-- Page Indicator -->
+            <div class="page-indicator">
+                <span class="current" id="currentPage">1</span> / <span id="totalPages">10</span>
+            </div>
+        </div>
+
+        <div class="keyboard-hint">키보드 ← → 또는 클릭으로 슬라이드 이동</div>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const currentPageEl = document.getElementById('currentPage');
+        const totalPagesEl = document.getElementById('totalPages');
+
+        totalPagesEl.textContent = totalSlides;
+
+        function showSlide(index) {
+            // Remove active class from all slides
+            slides.forEach(slide => slide.classList.remove('active'));
+
+            // Add active class to current slide
+            slides[index].classList.add('active');
+
+            // Update page indicator
+            currentPageEl.textContent = index + 1;
+
+            // Update button states
+            prevBtn.disabled = index === 0;
+            nextBtn.disabled = index === totalSlides - 1;
+        }
+
+        function nextSlide() {
+            if (currentSlide < totalSlides - 1) {
+                currentSlide++;
+                showSlide(currentSlide);
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 0) {
+                currentSlide--;
+                showSlide(currentSlide);
+            }
+        }
+
+        // Button click events
+        nextBtn.addEventListener('click', nextSlide);
+        prevBtn.addEventListener('click', prevSlide);
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                e.preventDefault();
+                nextSlide();
+            } else if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                prevSlide();
+            }
+        });
+
+        // Initialize
+        showSlide(currentSlide);
+    </script>
+</body>
+</html>
